@@ -1,22 +1,16 @@
+using TMPro;
 using UnityEngine;
 
 public class pickupInteraction : MonoBehaviour
 {
-    private BoxCollider2D cl;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        cl = GetComponent<BoxCollider2D>();
+        if (collision.gameObject.CompareTag("pickup"))
+        {
+            collision.gameObject.SetActive(false);
+            scoreManager.instance.addPoint();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
 }

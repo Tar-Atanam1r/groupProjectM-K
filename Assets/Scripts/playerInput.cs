@@ -25,14 +25,14 @@ public class playerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.GetKeyDown("a"))
         {
             movingLeft = true;
             movingRight = false;
             spriteRenderer.flipX = true;
         }
-        
+
         if (Input.GetKeyDown("d"))
         {
             movingRight = true;
@@ -45,10 +45,11 @@ public class playerInput : MonoBehaviour
             hasJumped = true;
         }
 
-        if (Input.GetKeyDown("left shift")) {
+        if (Input.GetKeyDown("left shift"))
+        {
             hasDashed = true;
         }
-        
+
     }
 
     void FixedUpdate()
