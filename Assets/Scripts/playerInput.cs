@@ -1,6 +1,7 @@
 using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class playerInput : MonoBehaviour
 {
@@ -12,8 +13,16 @@ public class playerInput : MonoBehaviour
     public float acceleration;
     private bool hasJumped;
     private bool hasDashed;
+    private bool canDash = true;
     private bool movingLeft;
     private bool movingRight;
+
+    IEnumerator dashWait()
+    {
+        yield return new WaitForSeconds(0.5f);
+        canDash = true;
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,14 +34,14 @@ public class playerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         if (Input.GetKeyDown("a"))
         {
             movingLeft = true;
             movingRight = false;
             spriteRenderer.flipX = true;
         }
-        
+
         if (Input.GetKeyDown("d"))
         {
             movingRight = true;
@@ -45,10 +54,14 @@ public class playerInput : MonoBehaviour
             hasJumped = true;
         }
 
-        if (Input.GetKeyDown("left shift")) {
-            hasDashed = true;
+        if (Input.GetKeyDown("left shift"))
+        {
+            if (canDash)
+            {
+                hasDashed = true;
+            }
         }
-        
+
     }
 
     void FixedUpdate()
@@ -72,11 +85,15 @@ public class playerInput : MonoBehaviour
 
                 rb.AddRelativeForce(-dash, ForceMode2D.Impulse);
                 hasDashed = false;
+                canDash = false;
+                StartCoroutine(dashWait());
             }
             else if (movingRight)
             {
                 rb.AddRelativeForce(dash, ForceMode2D.Impulse);
                 hasDashed = false;
+                canDash = false;
+                StartCoroutine(dashWait());
             }
         }
 
